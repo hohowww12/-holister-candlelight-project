@@ -377,6 +377,23 @@ html{scroll-padding-top:72px}
 .crew-list .tbd{font-family:"IBM Plex Sans KR",sans-serif;font-size:14px;font-weight:400;letter-spacing:.06em;color:rgba(201,188,198,.6)}
 @media (max-width:879px){.crew{margin-top:8px}}
 @media (min-width:880px){.crew{position:sticky;top:96px;margin-top:8px}}
+
+/* ===== 크레딧: 불이 켜지며 드러나기 (누르면 다시) ===== */
+@media (prefers-reduced-motion:no-preference){
+  .crew.fx{cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .crew.fx:not(.lit) .crew-flame{opacity:0;transform:scale(.2)}
+  .crew.fx:not(.lit) .crew-halo{opacity:0}
+  .crew.fx .rvl{transition:opacity .9s ease,filter .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:calc(.9s + var(--i,0)*.12s)}
+  .crew.fx:not(.lit) .rvl{opacity:0;filter:blur(6px);transform:translateY(8px);transition:none}
+  .crew.fx.lit .crew-flame{animation:crewIgnite 1s cubic-bezier(.2,.8,.2,1) both}
+  .crew.fx.lit .crew-flame svg{animation:crewSway 4.2s ease-in-out 1s infinite}
+  .crew.fx.lit .crew-halo{animation:crewHaloIn 1.6s ease .35s both,crewBreath 3.1s ease-in-out 2s infinite}
+  .crew.fx::after{content:"";position:absolute;left:50%;top:48px;width:10px;height:10px;translate:-50% 0;border-radius:50%;pointer-events:none;opacity:0}
+  .crew.fx.lit::after{animation:crewFlash 1.4s ease-out .15s both}
+}
+@keyframes crewIgnite{0%{opacity:0;transform:scale(.15)}25%{opacity:1;transform:scale(.5) translateY(4px);filter:brightness(2.2)}55%{transform:scale(1.18)}75%{transform:scale(.94)}100%{opacity:1;transform:scale(1);filter:none}}
+@keyframes crewHaloIn{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.25)}100%{opacity:.9;transform:scale(1)}}
+@keyframes crewFlash{0%{opacity:0;box-shadow:0 0 0 0 rgba(255,210,140,0)}20%{opacity:1;box-shadow:0 0 60px 40px rgba(255,200,120,.35)}100%{opacity:0;box-shadow:0 0 160px 120px rgba(255,180,90,0)}}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
@@ -852,6 +869,24 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   var dots=pg.querySelectorAll('.dots i'),cnt=pg.querySelector('.count b'),last=-1;
   function upd(){var f=ul.firstElementChild;if(!f)return;var w=f.getBoundingClientRect().width+(parseFloat(getComputedStyle(ul).columnGap)||0);if(!w)return;var i=Math.max(0,Math.min(dots.length-1,Math.round(ul.scrollLeft/w)));if(i===last)return;last=i;dots.forEach(function(d,j){d.classList.toggle('on',j===i);});cnt.textContent=i+1;}
   ul.addEventListener('scroll',function(){requestAnimationFrame(upd);},{passive:true});window.addEventListener('resize',function(){last=-1;upd();});upd();
+})();
+</script>
+<script>
+/* 크레딧 카드: 화면에 들어오면 촛불이 켜지며 한 줄씩 드러남, 누르면 다시 */
+(function(){
+  var crew=document.querySelector('.crew');if(!crew||!('IntersectionObserver' in window))return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var items=[crew.querySelector('.crew-org'),crew.querySelector('.crew-about'),crew.querySelector('.crew-yr')].concat([].slice.call(crew.querySelectorAll('.crew-list>div')));
+  items.forEach(function(el,i){if(el){el.classList.add('rvl');el.style.setProperty('--i',i);}});
+  crew.classList.add('fx');
+  /* 켜지는 시점: 휴대폰은 일시 칸이 위쪽 메뉴바 뒤로 20%쯤 가려질 때, 넓은 화면은 카드 윗부분이 화면 45% 높이에 올 때 */
+  var row=document.querySelector('.facts>div'),bar=document.querySelector('header.bar'),done=false;
+  function check(){if(done)return;var top=bar?bar.getBoundingClientRect().bottom:0;var r=row?row.getBoundingClientRect():crew.getBoundingClientRect();
+    var wide=innerWidth>=880,c=crew.getBoundingClientRect();
+    if((!wide&&r.top+r.height*.2<=top)||(wide&&c.top<=innerHeight*.45)){done=true;crew.classList.add('lit');removeEventListener('scroll',onScroll);}}
+  function onScroll(){requestAnimationFrame(check);}
+  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);check();
+  crew.addEventListener('click',function(){done=true;crew.classList.remove('lit');void crew.offsetWidth;crew.classList.add('lit');});
 })();
 </script>
 </body>
