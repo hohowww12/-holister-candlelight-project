@@ -280,7 +280,7 @@ html{scroll-padding-top:72px}
 .p-quote{margin:0;font-size:16.5px;line-height:1.6;color:#ffd6f6;text-shadow:0 0 14px rgba(255,79,210,.35)}
 .p-does{margin:auto 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:15px;color:var(--soft)}
 .credits{margin:22px 0 0;padding:0;display:grid;gap:10px}
-.credits div{display:grid;grid-template-columns:76px 1fr;gap:14px}
+.credits div{display:grid;grid-template-columns:86px 1fr;gap:14px}
 .credits dt{color:var(--soft);font-size:15px}
 .credits dd{margin:0;font-size:16px;font-weight:500}
 
@@ -344,6 +344,24 @@ html{scroll-padding-top:72px}
 }
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes glowIn{to{opacity:1}}
+/* ===== 제목 글자 바깥 윤곽의 얇은 네온 테두리 ===== */
+.title{isolation:isolate}
+.title>.c,.title>.l{position:relative;white-space:nowrap}
+.title .c::before,.title .l::before{content:attr(data-t);position:absolute;white-space:nowrap;overflow-wrap:normal;word-break:normal;z-index:-1;pointer-events:none;text-shadow:none}
+.title .c::before{inset:-.3em -.45em -.15em -.15em;padding:.3em .45em .15em .15em;color:#ff5fd8;-webkit-text-stroke:5px #ff5fd8;filter:drop-shadow(0 0 1.5px #ffb3ee) drop-shadow(0 0 6px var(--pink))}
+.title .l::before{inset:-.3em -.45em 0 -.15em;padding:.3em .45em .3em .77em;color:#ffc33a;-webkit-text-stroke:5px #ffc33a;filter:drop-shadow(0 0 1.5px #ffe9a6) drop-shadow(0 0 6px #ffa820)}
+.title .c{text-shadow:0 0 18px rgba(255,79,210,.85),0 0 46px var(--pink),0 0 100px rgba(255,79,210,.6)}
+.title .l{text-shadow:0 0 18px rgba(255,200,60,.85),0 0 46px rgba(255,190,40,.8),0 0 100px rgba(255,170,40,.5)}
+@keyframes flame{
+  0%,100%{opacity:1}
+  14%{opacity:.72}
+  27%{opacity:1}
+  41%{opacity:.84}
+  55%{opacity:1}
+  68%{opacity:.7}
+  83%{opacity:.95}
+}
+@keyframes flick{0%{opacity:0}10%{opacity:0}14%{opacity:1}20%{opacity:.08}28%{opacity:1}36%{opacity:.35}44%,100%{opacity:1}}
 </style>
 </head>
 <body>
@@ -364,7 +382,7 @@ html{scroll-padding-top:72px}
   <section class="intro" aria-labelledby="show-title">
     <div class="wrap">
       <p class="occasion">청운교회 창립 60주년 기념</p>
-      <h1 class="title play" id="show-title" tabindex="0" title="누르면 네온이 다시 켜져요"><span class="c">Candle</span><span class="l"><svg class="church" viewBox="0 0 100 150" aria-hidden="true"><defs><filter id="neonGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter><radialGradient id="flameFill" cx="50%" cy="68%" r="60%"><stop offset="0" stop-color="#ffcf73" stop-opacity=".6"/><stop offset="1" stop-color="#ff6a14" stop-opacity="0"/></radialGradient></defs><path class="fill" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="arch tube" pathLength="1" filter="url(#neonGlow)" d="M12 150 V98 C12 74 30 61 50 60"/><path class="arch core" pathLength="1" d="M12 150 V98 C12 74 30 61 50 60"/><path class="arch tube" pathLength="1" filter="url(#neonGlow)" d="M88 150 V98 C88 74 70 61 50 60"/><path class="arch core" pathLength="1" d="M88 150 V98 C88 74 70 61 50 60"/><path class="flame tube" pathLength="1" filter="url(#neonGlow)" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="flame core" pathLength="1" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="cross tube" pathLength="1" filter="url(#neonGlow)" d="M50 22 V52 M42 34 H58"/><path class="cross core" pathLength="1" d="M50 22 V52 M42 34 H58"/></svg>Light!</span></h1>
+      <h1 class="title play" id="show-title" tabindex="0" title="누르면 네온이 다시 켜져요"><span class="c" data-t="Candle">Candle</span><span class="l" data-t="Light!"><svg class="church" viewBox="0 0 100 150" aria-hidden="true"><defs><filter id="neonGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter><radialGradient id="flameFill" cx="50%" cy="68%" r="60%"><stop offset="0" stop-color="#ffcf73" stop-opacity=".6"/><stop offset="1" stop-color="#ff6a14" stop-opacity="0"/></radialGradient></defs><path class="fill" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="arch tube" pathLength="1" filter="url(#neonGlow)" d="M12 150 V98 C12 74 30 61 50 60"/><path class="arch core" pathLength="1" d="M12 150 V98 C12 74 30 61 50 60"/><path class="arch tube" pathLength="1" filter="url(#neonGlow)" d="M88 150 V98 C88 74 70 61 50 60"/><path class="arch core" pathLength="1" d="M88 150 V98 C88 74 70 61 50 60"/><path class="flame tube" pathLength="1" filter="url(#neonGlow)" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="flame core" pathLength="1" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="cross tube" pathLength="1" filter="url(#neonGlow)" d="M50 22 V52 M42 34 H58"/><path class="cross core" pathLength="1" d="M50 22 V52 M42 34 H58"/></svg>Light!</span></h1>
       <p class="genre"><b>MUSIC THEATRE · PRAISE WORSHIP</b><span>청운청년부 2026 홀리스터<br>뮤지컬 캔들라이트!</span></p>
     </div>
     <a class="cue" href="#about"><span>아래로 내려보세요</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -488,8 +506,8 @@ html{scroll-padding-top:72px}
     </div>
     <div class="wrap">
       <dl class="credits" data-rv>
-        <div><dt>특별출연</dt><dd>준영 · 호윤</dd></div>
-        <div><dt>밴드</dt><dd>혜빈 · 유진 · 승원 · 기정</dd></div>
+        <div><dt>밴드</dt><dd>혜빈 · 유진 · 승원 · 지헌 · 기정</dd></div>
+        <div><dt>백스테이지</dt><dd>준영 · 호윤</dd></div>
       </dl>
     </div>
   </section>
