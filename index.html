@@ -315,6 +315,18 @@ html{scroll-padding-top:72px}
   .guest{max-width:640px}
   .seasons{max-width:760px}
 }
+
+/* 기획의도: 초대받은 손님 (세 칸 아이콘) */
+.ga{margin-top:12px;padding:26px 18px 22px;border-radius:20px;background:linear-gradient(170deg,#1d1420,#120d14);border:1px solid rgba(214,174,98,.28);text-align:center;max-width:640px}
+.ga-kicker{margin:0;font-family:var(--f-script);font-size:22px;color:#ffe08a;text-shadow:0 0 12px rgba(255,200,80,.4)}
+.ga-title{margin:6px 0 22px;font-size:17px;font-weight:600;line-height:1.5}
+.ga ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr)}
+.ga li{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 6px;min-width:0}
+.ga li+li{border-left:1px solid rgba(214,174,98,.2)}
+.ga svg{width:34px;height:34px;fill:none;stroke:#ffd98a;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(255,200,90,.45))}
+.ga b{font-size:16px;color:var(--ink)}
+.ga span{font-size:12.5px;line-height:1.5;color:var(--soft)}
+.ga-note{margin:20px 0 0;padding-top:16px;border-top:1px solid rgba(214,174,98,.2);font-size:14.5px;font-weight:500;color:#ffe08a}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
@@ -527,16 +539,15 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
       </header>
       <p class="ch-lead" data-rv>초는 제 몸을 녹여야<br>주변을 밝힙니다.</p>
       <p class="ch-text" data-rv>〈Candlelight〉는 자신을 태워 빛을 밝히신 예수님을 찬양하는 80분의 예배형 공연입니다. 11월 20일 단 하루, 극장을 ‘여호와의 집’으로 꾸미고 청년 7명과 밴드가 16곡의 찬양으로 여러분을 맞이합니다.</p>
-      <ul class="themes" data-rv aria-label="공연의 주제">
-        <li>희생</li><li>사랑</li><li>세상의 빛</li>
-      </ul>
-      <div class="guest" data-rv>
-        <p class="guest-title">오늘 여러분은 관객이 아니라 초대받은 손님입니다</p>
-        <ul class="guest-list">
-          <li><b>팝콘</b><span>함께 떡을 떼는 식탁 교제</span></li>
-          <li><b>음료</b><span>서로의 기도 제목을 위한 건배</span></li>
-          <li><b>촛불</b><span>객석 모두가 세상의 빛이 되는 순간</span></li>
+      <div class="ga" data-rv>
+        <p class="ga-kicker" aria-hidden="true">You're invited</p>
+        <p class="ga-title">오늘 여러분은 관객이 아니라<br>초대받은 손님입니다</p>
+        <ul>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M11 16h18l-2.4 18H13.4z"/><path d="M15.5 16l1 18M24.5 16l-1 18"/><path d="M11.5 16c-1.8-3.5 1.6-6.4 4.3-4.9.6-3.6 6-4.1 7.2-.7 2.8-1.4 6.1 1.6 5.5 5.6"/></svg><b>팝콘</b><span>함께 떡을 떼는<br>식탁 교제</span></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M13 9h14l-1.6 10.5a5.4 5.4 0 0 1-10.8 0z"/><path d="M20 25v7M15 33h10"/><path d="M14.2 14h11.6"/></svg><b>음료</b><span>서로의 기도 제목을<br>위한 건배</span></li>
+          <li><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M15 19h10v15H15z"/><path d="M20 19v-3"/><path d="M20 6c2.4 3 3.6 4.8 3.6 6.6a3.6 3.6 0 0 1-7.2 0C16.4 10.8 17.6 9 20 6z"/></svg><b>촛불</b><span>객석 모두가<br>세상의 빛이 되는 순간</span></li>
         </ul>
+        <p class="ga-note">세 가지 모두 관객에게 제공됩니다</p>
       </div>
     </div>
   </section>
