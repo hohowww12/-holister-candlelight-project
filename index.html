@@ -353,6 +353,12 @@ html{scroll-padding-top:72px}
 .tag{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.06em;line-height:1.6}
 .tag.inst{border:1px solid #5a4a5c;color:var(--soft)}
 .tag.key{border:1px solid rgba(255,227,110,.7);color:var(--gold)}
+
+/* 제작진 (소개, 공연 정보 아래) */
+.staff{margin:18px 0 0;padding:0;display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:6px 14px}
+.staff div{display:contents}
+.staff dt{font-size:13.5px;color:var(--soft);white-space:nowrap}
+.staff dd{margin:0;font-size:15.5px;font-weight:600}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
@@ -546,6 +552,10 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
             <dt>장소</dt>
             <dd class="place">청운교회 비전홀<small>VISION HALL</small></dd>
           </div>
+        </dl>
+        <dl class="staff">
+          <div><dt>각본 · 연출</dt><dd>박상우</dd></div>
+          <div><dt>웹 제작 · 조연출</dt><dd>이동림</dd></div>
         </dl>
 
       </div>
