@@ -787,5 +787,67 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   if(top){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setActive('');});},{rootMargin:'-45% 0px -50% 0px'}).observe(top);}
 })();
 </script>
+<script>
+/* 네온 켜지는 소리: 티켓을 찢을 때, 제목을 눌러 다시 켤 때 재생 */
+(function(){
+  var KIND='r',SR=44100,LEN=5.6,OFF=.38,url=null;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  function build(ctx,master,noise,which){
+    function env(g,t,a,peak,dec){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(0.0001,t+a+dec);}
+    function crackle(t,dur,vol){var s=ctx.createBufferSource();s.buffer=noise;var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2400+Math.random()*1800;bp.Q.value=1.2;var g=ctx.createGain();env(g,t,.002,vol,dur);s.connect(bp);bp.connect(g);g.connect(master);s.start(t,Math.random()*.5);s.stop(t+dur+.05);}
+    function burst(t,n,vol){for(var i=0;i<n;i++)crackle(t+i*0.018+Math.random()*.01,.025+Math.random()*.03,vol*(.6+Math.random()*.4));}
+    function ping(t,f,vol){[1,2.76].forEach(function(m,i){var o=ctx.createOscillator();o.type='sine';o.frequency.value=f*m;var g=ctx.createGain();env(g,t,.004,vol*(i?0.25:1),i?.18:.45);o.connect(g);g.connect(master);o.start(t);o.stop(t+.6);});}
+    function hum(t0,len,vol,base){var o1=ctx.createOscillator(),o2=ctx.createOscillator();o1.type='sawtooth';o2.type='sine';o1.frequency.value=base*2;o2.frequency.value=base;var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=520;var g=ctx.createGain();g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.25);g.gain.setValueAtTime(vol,t0+len-.7);g.gain.exponentialRampToValueAtTime(0.0001,t0+len);o1.connect(lp);o2.connect(lp);lp.connect(g);g.connect(master);o1.start(t0);o2.start(t0);o1.stop(t0+len+.05);o2.stop(t0+len+.05);}
+    function clack(t){var s=ctx.createBufferSource();s.buffer=noise;var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1600;var g=ctx.createGain();env(g,t,.001,.9,.06);s.connect(lp);lp.connect(g);g.connect(master);s.start(t);s.stop(t+.1);var o=ctx.createOscillator();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);var g2=ctx.createGain();env(g2,t,.002,.7,.14);o.connect(g2);g2.connect(master);o.start(t);o.stop(t+.2);}
+    function buzz(t,len,vol){var o=ctx.createOscillator();o.type='square';o.frequency.value=120;var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1100;bp.Q.value=.8;var g=ctx.createGain();var n=24,c=new Float32Array(n);for(var i=0;i<n;i++)c[i]=(Math.random()<.35?0:vol*(.4+Math.random()*.6))*(1-i/n*.6);c[0]=0;c[n-1]=0;g.gain.setValueCurveAtTime(c,t,len);o.connect(bp);bp.connect(g);g.connect(master);o.start(t);o.stop(t+len+.05);}
+    function verb(sec,decay,wet){var len=Math.round(ctx.sampleRate*sec),ir=ctx.createBuffer(2,len,ctx.sampleRate);for(var ch=0;ch<2;ch++){var d=ir.getChannelData(ch);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}var cv=ctx.createConvolver();cv.buffer=ir;var g=ctx.createGain();g.gain.value=wet;cv.connect(g);g.connect(master);return cv;}
+    function tone(t,f,vol,dec,type,dest,att){att=att||.004;var o=ctx.createOscillator();o.type=type||'sine';o.frequency.value=f;var g=ctx.createGain();env(g,t,att,vol,dec);o.connect(g);g.connect(master);if(dest)g.connect(dest);o.start(t);o.stop(t+att+dec+.1);}
+    function bell(t,f,vol,dest){[[1,1,1.6],[2.0,.35,1.0],[2.76,.22,.6],[5.4,.08,.3]].forEach(function(p){tone(t,f*p[0],vol*p[1],p[2],'sine',dest);});}
+    function pluck(t,f,vol,dest){tone(t,f,vol,.55,'sine',dest,.002);tone(t,f*4.2,vol*.18,.12,'sine',dest,.001);tone(t,f*2,vol*.25,.3,'triangle',dest,.002);}
+    function swish(t,len,vol,f0,f1){var s=ctx.createBufferSource();s.buffer=noise;s.loop=true;var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.Q.value=.9;bp.frequency.setValueAtTime(f0,t);bp.frequency.exponentialRampToValueAtTime(f1,t+len);var g=ctx.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+len*.25);g.gain.exponentialRampToValueAtTime(0.0001,t+len);s.connect(bp);bp.connect(g);g.connect(master);s.start(t);s.stop(t+len+.05);}
+    function pad(t,len,freqs,vol,dest){freqs.forEach(function(f){[-4,4].forEach(function(dt){var o=ctx.createOscillator();o.type='triangle';o.frequency.value=f;o.detune.value=dt;var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(500,t);lp.frequency.linearRampToValueAtTime(2200,t+len*.7);var g=ctx.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+len*.6);g.gain.exponentialRampToValueAtTime(0.0001,t+len);o.connect(lp);lp.connect(g);g.connect(master);if(dest)g.connect(dest);o.start(t);o.stop(t+len+.05);});});}
+    var C=[.48,.76,1.08],L=[1.83,2.11,2.43],n=.02+OFF;
+    if(which=='r'){var rv=verb(2.6,2.4,.55);C.forEach(function(x){tone(n+x,2093,.26,.45,'sine',rv);tone(n+x,2093*2.76,.06,.18,'sine',rv);});L.forEach(function(x){tone(n+x,2637,.26,.45,'sine',rv);tone(n+x,2637*2.76,.06,.18,'sine',rv);});}
+    if(which=='chime'){var rv2=verb(2.2,2.6,.4);var nc=[1046.5,1318.5,1568],nl=[1318.5,1568,2093];C.forEach(function(x,i){bell(n+x,nc[i],.22,rv2);});L.forEach(function(x,i){bell(n+x,nl[i],.22,rv2);});}
+    if(which=='box'){var rv3=verb(1.4,3,.3);var nb=[1568,1760,2093,2349,2637,3136];C.concat(L).forEach(function(x,i){pluck(n+x,nb[i],.3,rv3);});}
+    if(which=='match'){swish(n+.12,.32,.5,5000,2200);swish(n+.38,.9,.35,600,1600);var rv4=verb(2.4,2.4,.45);bell(n+2.6,1568,.3,rv4);}
+    if(which=='pad'){var rv5=verb(3,2.2,.5);pad(n+.3,3.6,[261.6,329.6,392,523.3],.05,rv5);bell(n+2.55,1046.5,.26,rv5);}
+    if(which==1){C.concat(L).forEach(function(x,i){burst(n+x,3,i%3==1?.35:.55);});hum(n+1.1,2.6,.12,55);}
+    if(which==2){C.forEach(function(x){ping(n+x,2093,.3);});L.forEach(function(x){ping(n+x,2637,.3);});hum(n+1.2,2.2,.04,60);}
+    if(which==3){clack(n+.05);buzz(n+.42,.75,.35);buzz(n+1.77,.75,.35);C.concat(L).forEach(function(x){burst(n+x,4,.45);});hum(n+1.1,2.8,.12,55);}
+  }
+  function wav(buf){
+    var d=buf.getChannelData(0),n=d.length,ab=new ArrayBuffer(44+n*2),v=new DataView(ab);
+    function str(o,s){for(var i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));}
+    str(0,'RIFF');v.setUint32(4,36+n*2,true);str(8,'WAVE');str(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,SR,true);v.setUint32(28,SR*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,n*2,true);
+    var peak=0;for(var i=0;i<n;i++)peak=Math.max(peak,Math.abs(d[i]));var k=peak>0?.95/peak:1;
+    for(var j=0;j<n;j++){var x=Math.max(-1,Math.min(1,d[j]*k));v.setInt16(44+j*2,x<0?x*0x8000:x*0x7fff,true);}
+    return URL.createObjectURL(new Blob([ab],{type:'audio/wav'}));
+  }
+  var OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!OAC)return;
+  try{
+    var ctx=new OAC(1,Math.round(SR*LEN),SR);
+    var comp=ctx.createDynamicsCompressor();comp.connect(ctx.destination);
+    var master=ctx.createGain();master.gain.value=.9;master.connect(comp);
+    var noise=ctx.createBuffer(1,SR,SR),d=noise.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    build(ctx,master,noise,KIND);
+    var p=ctx.startRendering();
+    (p&&p.then?p:new Promise(function(res){ctx.oncomplete=function(e){res(e.renderedBuffer);};})).then(function(b){url=wav(b);});
+  }catch(e){return;}
+  var a=new Audio();a.preload='auto';a.setAttribute('playsinline','');a.volume=.8;
+  function play(skip){
+    try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}
+    if(!url)return;
+    try{a.pause();}catch(e){}
+    a.src=url;
+    if(skip){var seek=function(){a.removeEventListener('loadedmetadata',seek);try{a.currentTime=skip;}catch(e){}};a.addEventListener('loadedmetadata',seek);}
+    try{var pr=a.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}
+  }
+  var gate=document.querySelector('.gate');
+  if(gate)gate.addEventListener('click',function(){play(0);});
+  var t=document.getElementById('show-title');
+  if(t)t.addEventListener('click',function(){play(OFF);});
+})();
+</script>
 </body>
 </html>
