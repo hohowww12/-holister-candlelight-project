@@ -11,7 +11,7 @@
 <meta property="og:description" content="청운교회 창립 60주년 기념, 홀리스터 음악극 캔들라이트. 2026년 11월 20일 오후 8시 청운교회 비전홀.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Kaushan+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Kaushan+Script&family=Nanum+Pen+Script&display=swap">
 <style>
 /* Layout: one narrow reading column on phones (title → 일시·장소 → 버튼 → 포스터); on wide screens the poster moves to a right column beside the text. */
 :root{
@@ -298,7 +298,7 @@ html{scroll-padding-top:72px}
 .shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 16px 14px;font-size:17px;font-weight:700;background:linear-gradient(transparent,rgba(9,7,11,.85))}
 .shot.empty{display:flex;align-items:center;justify-content:center;background:radial-gradient(closest-side,rgba(255,79,210,.10),transparent),var(--panel);border-style:dashed;border-color:#4a3a4c}
 .shot.empty img{display:none}
-.shot.empty::before{content:"사진 준비 중";font-size:14px;color:var(--soft)}
+.shot.empty::before{content:"11/7 OPEN";font-size:15px;font-weight:600;letter-spacing:.2em;color:#ffe08a;text-shadow:0 0 12px rgba(255,200,80,.4)}
 .shot.wide{aspect-ratio:3/2;max-width:100%}
 .shot.wide figcaption{font-size:14px;font-weight:500;color:var(--soft)}
 
@@ -327,6 +327,32 @@ html{scroll-padding-top:72px}
 .ga b{font-size:16px;color:var(--ink)}
 .ga span{font-size:12.5px;line-height:1.5;color:var(--soft)}
 .ga-note{margin:20px 0 0;padding-top:16px;border-top:1px solid rgba(214,174,98,.2);font-size:14.5px;font-weight:500;color:#ffe08a}
+
+/* ===== 등장인물: 한 화면에 한 사람 (휴대폰) ===== */
+@media (max-width:879px){
+  .cast-list{padding:0;gap:0;grid-auto-columns:100%;scroll-padding-inline:0}
+  .cast-list>li{scroll-snap-stop:always}
+  .cast-list .person{border:0;border-radius:0;background:linear-gradient(180deg,#120d14,#09070b)}
+  .cast-list .person .shot{aspect-ratio:4/5}
+  .cast-list .p-body{padding:18px 20px 6px}
+}
+.cast-list .person figcaption h3{font-family:"Nanum Pen Script",cursive;font-weight:400;font-size:40px;line-height:1;letter-spacing:.01em;color:#fff4f9;text-shadow:0 0 12px rgba(255,79,210,.35)}
+.pager{display:flex;align-items:center;justify-content:center;gap:16px;padding:14px 20px 0;font-size:13px;color:var(--soft)}
+.pager .count b{color:var(--ink);font-weight:700}
+.pager .dots{display:flex;gap:6px}
+.pager .dots i{width:6px;height:6px;border-radius:50%;background:#4a3a4c;transition:width .25s,background-color .25s}
+.pager .dots i.on{width:18px;border-radius:3px;background:var(--gold)}
+@media (min-width:880px){.pager{display:none}}
+/* ===== 송리스트: 부르는 사람 + 표시 ===== */
+.set li{grid-template-columns:30px 1fr auto;align-items:center;gap:6px 10px;padding:12px 0}
+.set li::before{content:none}
+.set .no{font-size:14px;color:var(--soft);font-variant-numeric:tabular-nums}
+.set .tt{min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.set .sn{font-size:17px;font-weight:500;line-height:1.4}
+.set .who{font-size:13.5px;color:#ffd6f6;text-align:right;white-space:nowrap}
+.tag{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.06em;line-height:1.6}
+.tag.inst{border:1px solid #5a4a5c;color:var(--soft)}
+.tag.key{border:1px solid rgba(255,227,110,.7);color:var(--gold)}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
@@ -446,6 +472,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
 .gate-hint{font-size:14px;letter-spacing:.06em;color:rgba(255,244,249,.8);text-shadow:0 1px 8px rgba(0,0,0,.6);opacity:0;animation:hintIn .8s ease 1.2s forwards}
 @keyframes hintIn{to{opacity:1}}
 .gate.torn .gate-photo{filter:brightness(.85) saturate(1.1)}
+.tk-title .b{margin-left:.04em}
 </style>
 </head>
 <body>
@@ -457,7 +484,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   var g=document.createElement('div');g.className='gate';g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label','티켓을 눌러 입장하기');
   g.innerHTML='<div class="gate-beam" aria-hidden="true"></div><div class="gate-folds" aria-hidden="true"></div><div class="gate-photo2" aria-hidden="true"></div><div class="gate-photo" aria-hidden="true"></div><div class="gate-shade" aria-hidden="true"></div><div class="gate-grain" aria-hidden="true"></div><div class="tk" aria-hidden="true">'+
     '<div class="tk-half tk-top"><span class="sheen"></span><p class="tk-occ">청운교회 창립 60주년 기념</p>'+
-    '<p class="tk-title"><span class="a">Candle</span> <span class="b">Light!</span></p>'+
+    '<p class="tk-title"><span class="a">Candle</span><span class="b">Light!</span></p>'+
     '<p class="tk-genre">MUSIC THEATRE · PRAISE WORSHIP</p><p class="tk-sub">청운청년부 2026 홀리스터 뮤지컬</p></div>'+
     '<div class="tk-half tk-bot"><span class="sheen"></span><dl class="tk-info"><div><dt>날짜</dt><dd>11.20<small>금요일</small></dd></div>'+
     '<div><dt>시간</dt><dd>20:00<small>오후 8시</small></dd></div><div><dt>장소</dt><dd>비전홀<small>청운교회</small></dd></div></dl>'+
@@ -495,7 +522,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
     <div class="wrap">
       <p class="occasion">청운교회 창립 60주년 기념</p>
       <h1 class="title play" id="show-title" tabindex="0" title="누르면 네온이 다시 켜져요"><span class="c" data-t="Candle">Candle</span><span class="l" data-t="Light!"><svg class="church" viewBox="0 0 100 150" aria-hidden="true"><defs><filter id="neonGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter><radialGradient id="flameFill" cx="50%" cy="68%" r="60%"><stop offset="0" stop-color="#ffcf73" stop-opacity=".6"/><stop offset="1" stop-color="#ff6a14" stop-opacity="0"/></radialGradient></defs><path class="fill" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="arch tube" pathLength="1" filter="url(#neonGlow)" d="M12 150 V98 C12 74 30 61 50 60"/><path class="arch core" pathLength="1" d="M12 150 V98 C12 74 30 61 50 60"/><path class="arch tube" pathLength="1" filter="url(#neonGlow)" d="M88 150 V98 C88 74 70 61 50 60"/><path class="arch core" pathLength="1" d="M88 150 V98 C88 74 70 61 50 60"/><path class="flame tube" pathLength="1" filter="url(#neonGlow)" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="flame core" pathLength="1" d="M50 6 C58 18 68 29 68 41 C68 51 60 57 50 58 C40 57 32 51 32 41 C32 29 42 18 50 6 Z"/><path class="cross tube" pathLength="1" filter="url(#neonGlow)" d="M50 22 V52 M42 34 H58"/><path class="cross core" pathLength="1" d="M50 22 V52 M42 34 H58"/></svg>Light!</span></h1>
-      <p class="genre"><b>MUSIC THEATRE · PRAISE WORSHIP</b><span>청운청년부 2026 홀리스터<br>뮤지컬 캔들라이트!</span></p>
+      <p class="genre"><b>MUSIC THEATRE · PRAISE WORSHIP</b><span>청운청년부 2026 홀리스터 정기공연<br>뮤지컬 캔들라이트!</span></p>
     </div>
     <a class="cue" href="#about"><span>아래로 내려보세요</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </section>
@@ -538,7 +565,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
         <h2 id="intent-title">기획의도</h2>
       </header>
       <p class="ch-lead" data-rv>초는 제 몸을 녹여야<br>주변을 밝힙니다.</p>
-      <p class="ch-text" data-rv>〈Candlelight〉는 자신을 태워 빛을 밝히신 예수님을 찬양하는 80분의 예배형 공연입니다. 11월 20일 단 하루, 극장을 ‘여호와의 집’으로 꾸미고 청년 7명과 밴드가 16곡의 찬양으로 여러분을 맞이합니다.</p>
+      <p class="ch-text" data-rv>〈Candlelight!〉는 자신을 태워 빛을 밝히신 예수님을 찬양하는 80분의 예배형 공연입니다. 11월 20일 단 하루, 극장을 ‘여호와의 집’으로 꾸미고 청년 7명과 밴드가 16곡의 찬양으로 여러분을 맞이합니다.</p>
       <div class="ga" data-rv>
         <p class="ga-kicker" aria-hidden="true">You're invited</p>
         <p class="ga-title">오늘 여러분은 관객이 아니라<br>초대받은 손님입니다</p>
@@ -613,12 +640,12 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
           <div class="p-body"><p class="p-role">구도자 · 진지한 예배자</p><p class="p-quote">“엄격. 근엄. 진지!”</p><p class="p-does">말 대신 피아노로 고백하는 사람</p></div>
         </li>
 
-      <p class="swipe-hint" aria-hidden="true">옆으로 넘겨 보세요 <span>→</span></p>
+      <div class="pager" aria-hidden="true"><span class="count"><b>1</b> / 7</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
     </div>
     <div class="wrap">
       <dl class="credits" data-rv>
         <div><dt>밴드</dt><dd>혜빈 · 유진 · 승원 · 지헌 · 기정</dd></div>
-        <div><dt>백스테이지</dt><dd>준영 · 호윤</dd></div>
+        <div><dt>특별출연</dt><dd>이필산 목사님</dd></div>
       </dl>
     </div>
   </section>
@@ -632,12 +659,12 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
         <h2 id="songs-title">송리스트</h2>
       </header>
       <div class="setlist">
-        <section class="set" data-rv><h3 class="s-name s-open">여는 밤</h3><ol style="counter-reset:song 0"><li>여호와의 집으로 올라가</li><li>목마른 사슴이</li><li>Celebrate the Light</li></ol></section>
-        <section class="set" data-rv><h3 class="s-name s-spring">봄</h3><ol style="counter-reset:song 3"><li>너는 꽃이야</li></ol></section>
-        <section class="set" data-rv><h3 class="s-name s-summer">여름</h3><ol style="counter-reset:song 4"><li>내 마음을 가득 채운</li></ol></section>
-        <section class="set" data-rv><h3 class="s-name s-autumn">가을</h3><ol style="counter-reset:song 5"><li>주님의 바다에</li><li>그 사랑</li></ol></section>
-        <section class="set" data-rv><h3 class="s-name s-winter">겨울</h3><ol style="counter-reset:song 7"><li>기쁘다 구주 오셨네</li><li>밝은 빛이 가득해</li><li>예수 우리들의 밝은 빛</li><li>길을 만드시는 주</li></ol></section>
-        <section class="set" data-rv><h3 class="s-name s-night">다시, 밤</h3><ol style="counter-reset:song 11"><li>Praise</li><li>낮은 곳으로</li><li>하나님의 열심</li><li>주와 함께 걸어가네</li><li>사랑을 나눠요</li></ol></section>
+        <section class="set" data-rv><h3 class="s-name s-open">여는 밤</h3><ol><li><span class="no">1</span><span class="tt"><span class="sn">여호와의 집으로 올라가</span><span class="tag key">Opening</span></span><span class="who">ALL</span></li><li><span class="no">2</span><span class="tt"><span class="sn">목마른 사슴이</span><span class="tag inst">Inst</span></span></li><li><span class="no">3</span><span class="tt"><span class="sn">Celebrate the Light</span></span><span class="who">ALL</span></li></ol></section>
+        <section class="set" data-rv><h3 class="s-name s-spring">봄</h3><ol><li><span class="no">4</span><span class="tt"><span class="sn">너는 꽃이야</span></span><span class="who">국영</span></li></ol></section>
+        <section class="set" data-rv><h3 class="s-name s-summer">여름</h3><ol><li><span class="no">5</span><span class="tt"><span class="sn">내 마음을 가득 채운</span></span><span class="who">혜나 &amp; 예은</span></li></ol></section>
+        <section class="set" data-rv><h3 class="s-name s-autumn">가을</h3><ol><li><span class="no">6</span><span class="tt"><span class="sn">주님의 바다에</span><span class="tag inst">Inst</span></span></li><li><span class="no">7</span><span class="tt"><span class="sn">그 사랑</span></span><span class="who">다혜</span></li></ol></section>
+        <section class="set" data-rv><h3 class="s-name s-winter">겨울</h3><ol><li><span class="no">8</span><span class="tt"><span class="sn">기쁘다 구주 오셨네</span><span class="tag inst">Inst</span></span></li><li><span class="no">9</span><span class="tt"><span class="sn">밝은 빛이 가득해</span></span><span class="who">ALL</span></li><li><span class="no">10</span><span class="tt"><span class="sn">낮은 곳으로</span><span class="tag inst">Inst</span></span></li><li><span class="no">11</span><span class="tt"><span class="sn">예수 우리들의 밝은 빛</span></span><span class="who">ALL</span></li></ol></section>
+        <section class="set" data-rv><h3 class="s-name s-night">다시, 밤</h3><ol><li><span class="no">12</span><span class="tt"><span class="sn">Praise</span></span><span class="who">ALL</span></li><li><span class="no">13</span><span class="tt"><span class="sn">낮은 곳으로</span><span class="tag inst">Inst</span></span></li><li><span class="no">14</span><span class="tt"><span class="sn">하나님의 열심</span></span><span class="who">지운 &amp; 필산</span></li><li><span class="no">15</span><span class="tt"><span class="sn">주와 함께 걸어가네</span></span><span class="who">ALL</span></li><li><span class="no">16</span><span class="tt"><span class="sn">사랑을 나눠요</span><span class="tag key">Curtain Call</span></span><span class="who">ALL</span></li></ol></section>
       </div>
     </div>
   </section>
@@ -652,7 +679,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
         <p class="ch-en" aria-hidden="true">All Together</p>
         <h2 id="group-title">단체 사진</h2>
       </header>
-      <figure class="shot wide" data-rv><img src="photos/group.jpg" alt="Candlelight 출연진 단체 사진" loading="lazy" onerror="this.parentNode.classList.add('empty')"><figcaption>청운교회 홀리스터 · Candlelight 2026</figcaption></figure>
+      <figure class="shot wide" data-rv><img src="photos/group.jpg" alt="Candlelight 출연진 단체 사진" loading="lazy" onerror="this.parentNode.classList.add('empty')"><figcaption>청운교회 홀리스터 · Candlelight! 2026</figcaption></figure>
       <div class="see-you" data-rv>
         <p class="sign" aria-hidden="true">Celebrate the Light</p>
         <p>11월 20일 금요일 오후 8시,<br>청운교회 비전홀에서 만나요.</p>
@@ -664,7 +691,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
 <footer class="foot">
   <div class="wrap">
     <span>청운교회 홀리스터</span>
-    <span>Candle Light! 2026</span>
+    <span>Candlelight! 2026</span>
   </div>
 </footer>
 
@@ -785,6 +812,14 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   document.querySelectorAll('.chapter').forEach(function(s){io.observe(s);});
   var top=document.getElementById('about');
   if(top){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setActive('');});},{rootMargin:'-45% 0px -50% 0px'}).observe(top);}
+})();
+</script>
+<script>
+(function(){
+  var ul=document.querySelector('.cast-list'),pg=document.querySelector('.pager');if(!ul||!pg)return;
+  var dots=pg.querySelectorAll('.dots i'),cnt=pg.querySelector('.count b'),last=-1;
+  function upd(){var f=ul.firstElementChild;if(!f)return;var w=f.getBoundingClientRect().width;if(!w)return;var i=Math.max(0,Math.min(dots.length-1,Math.round(ul.scrollLeft/w)));if(i===last)return;last=i;dots.forEach(function(d,j){d.classList.toggle('on',j===i);});cnt.textContent=i+1;}
+  ul.addEventListener('scroll',function(){requestAnimationFrame(upd);},{passive:true});window.addEventListener('resize',function(){last=-1;upd();});upd();
 })();
 </script>
 </body>
