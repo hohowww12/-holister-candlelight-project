@@ -330,7 +330,7 @@ html{scroll-padding-top:72px}
 
 /* ===== 등장인물: 한 화면에 한 사람 (휴대폰) ===== */
 @media (max-width:879px){
-  .cast-list{padding:0;gap:0;grid-auto-columns:100%;scroll-padding-inline:0}
+  .cast-list{padding:0;gap:8px;grid-auto-columns:calc(100% - 26px);scroll-padding-inline:0}
   .cast-list>li{scroll-snap-stop:always}
   .cast-list .person{border:0;border-radius:0;background:linear-gradient(180deg,#120d14,#09070b)}
   .cast-list .person .shot{aspect-ratio:4/5}
@@ -818,7 +818,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
 (function(){
   var ul=document.querySelector('.cast-list'),pg=document.querySelector('.pager');if(!ul||!pg)return;
   var dots=pg.querySelectorAll('.dots i'),cnt=pg.querySelector('.count b'),last=-1;
-  function upd(){var f=ul.firstElementChild;if(!f)return;var w=f.getBoundingClientRect().width;if(!w)return;var i=Math.max(0,Math.min(dots.length-1,Math.round(ul.scrollLeft/w)));if(i===last)return;last=i;dots.forEach(function(d,j){d.classList.toggle('on',j===i);});cnt.textContent=i+1;}
+  function upd(){var f=ul.firstElementChild;if(!f)return;var w=f.getBoundingClientRect().width+(parseFloat(getComputedStyle(ul).columnGap)||0);if(!w)return;var i=Math.max(0,Math.min(dots.length-1,Math.round(ul.scrollLeft/w)));if(i===last)return;last=i;dots.forEach(function(d,j){d.classList.toggle('on',j===i);});cnt.textContent=i+1;}
   ul.addEventListener('scroll',function(){requestAnimationFrame(upd);},{passive:true});window.addEventListener('resize',function(){last=-1;upd();});upd();
 })();
 </script>
