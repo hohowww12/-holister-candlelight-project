@@ -11,7 +11,7 @@
 <meta property="og:description" content="청운교회 창립 60주년 기념, 홀리스터 음악극 캔들라이트. 2026년 11월 20일 오후 8시 청운교회 비전홀.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Kaushan+Script&family=Nanum+Pen+Script&family=Gowun+Batang:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Kaushan+Script&family=Nanum+Pen+Script&family=Gowun+Batang:wght@400;700&family=Song+Myung&display=swap">
 <style>
 /* Layout: one narrow reading column on phones (title → 일시·장소 → 버튼 → 포스터); on wide screens the poster moves to a right column beside the text. */
 :root{
@@ -394,6 +394,23 @@ html{scroll-padding-top:72px}
 @keyframes crewIgnite{0%{opacity:0;transform:scale(.15)}25%{opacity:1;transform:scale(.5) translateY(4px);filter:brightness(2.2)}55%{transform:scale(1.18)}75%{transform:scale(.94)}100%{opacity:1;transform:scale(1);filter:none}}
 @keyframes crewHaloIn{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.25)}100%{opacity:.9;transform:scale(1)}}
 @keyframes crewFlash{0%{opacity:0;box-shadow:0 0 0 0 rgba(255,210,140,0)}20%{opacity:1;box-shadow:0 0 60px 40px rgba(255,200,120,.35)}100%{opacity:0;box-shadow:0 0 160px 120px rgba(255,180,90,0)}}
+
+/* ===== 등장인물: 사진 오른쪽 금색 › (휴대폰) ===== */
+.cast-list .shot{position:relative}
+.kc-next{display:none}
+@media (max-width:879px){
+  .kc-next{position:absolute;right:6px;top:50%;translate:0 -50%;z-index:2;display:flex;width:44px;height:64px;align-items:center;justify-content:center;border:0;background:none;padding:0;cursor:pointer;font:300 46px/1 "IBM Plex Sans KR",sans-serif;color:#ffe36e;text-shadow:0 0 10px rgba(255,227,110,.8),0 0 24px rgba(255,200,80,.5);-webkit-tap-highlight-color:transparent}
+}
+@media (prefers-reduced-motion:no-preference){.kc-next{animation:kcBreathe 2.2s ease-in-out infinite}}
+@keyframes kcBreathe{0%,100%{opacity:.4;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+
+/* ===== 글꼴: 챕터 제목 = 송명(2px 작게), 기획의도 노란 문장 = 나눔손글씨 펜 ===== */
+.ch-head h2{font-family:"Song Myung",serif;font-weight:400;font-size:clamp(32px,calc(9vw - 2px),50px);letter-spacing:-.01em}
+.intent-lead{font-family:"Nanum Pen Script",cursive;font-weight:400;letter-spacing:0}
+/* 소개 문구: 송명 */
+.hero .lead{font-family:"Song Myung",serif;font-weight:400;letter-spacing:-.01em}
+/* 크레딧 카드 제목: 송명 */
+.crew .crew-org{font-family:"Song Myung",serif;font-weight:400}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
@@ -619,7 +636,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
         <p class="ch-en" aria-hidden="true">Our Heart</p>
         <h2 id="intent-title">기획의도</h2>
       </header>
-      <p class="ch-lead" data-rv>초는 제 몸을 녹여야<br>주변을 밝힙니다.</p>
+      <p class="ch-lead intent-lead" data-rv>초는 제 몸을 녹여야<br>주변을 밝힙니다.</p>
       <p class="ch-text" data-rv>〈Candlelight!〉는 자신을 태워 빛을 밝히신 예수님을 찬양하는 80분의 예배형 공연입니다. 11월 20일 단 하루, 극장을 ‘여호와의 집’으로 꾸미고 청년 7명과 밴드가 16곡의 찬양으로 여러분을 맞이합니다.</p>
       <div class="ga" data-rv>
         <p class="ga-kicker" aria-hidden="true">You're invited</p>
@@ -887,6 +904,17 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   function onScroll(){requestAnimationFrame(check);}
   addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);check();
   crew.addEventListener('click',function(){done=true;crew.classList.remove('lit');void crew.offsetWidth;crew.classList.add('lit');});
+})();
+</script>
+<script>
+/* 등장인물: 사진 오른쪽 › 를 누르면 다음 사람으로 */
+(function(){
+  var ul=document.querySelector('.cast-list');if(!ul)return;
+  var lis=[].slice.call(ul.querySelectorAll(':scope>li'));
+  function go(i){var li=lis[i];if(!li)return;ul.scrollTo({left:li.offsetLeft-ul.offsetLeft,behavior:'smooth'});}
+  lis.forEach(function(li,i){if(i===lis.length-1)return;var sh=li.querySelector('.shot');if(!sh)return;
+    var b=document.createElement('button');b.type='button';b.className='kc-next';b.setAttribute('aria-label','다음 사람 보기');b.textContent='›';
+    b.addEventListener('click',function(e){e.stopPropagation();go(i+1);});sh.appendChild(b);});
 })();
 </script>
 </body>
