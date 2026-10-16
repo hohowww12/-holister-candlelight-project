@@ -1074,10 +1074,10 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   /* 완전 암전 → (잠시 정적) → 불이 '탁' 켜짐: 간판 + 무대 빛 한 번에 → 제목 네온 → 나머지 글자 */
   var bo=document.createElement('div');bo.className='blackout';bo.setAttribute('aria-hidden','true');document.body.appendChild(bo);
   function run(){layout();
-    setTimeout(function(){root.classList.add('s-sign','s-amb','snap');bo.classList.add('off');},1720);
-    setTimeout(function(){t.classList.remove('hold');void t.offsetWidth;t.classList.add('play');},2220);
-    setTimeout(function(){root.classList.add('s-txt');},4320);
-    setTimeout(function(){root.classList.add('seq-done');root.classList.remove('seq','s-sign','s-amb','s-txt','snap');if(bo.parentNode)bo.parentNode.removeChild(bo);},5120);}
+    setTimeout(function(){root.classList.add('s-sign','s-amb','snap');bo.classList.add('off');},1420);
+    setTimeout(function(){t.classList.remove('hold');void t.offsetWidth;t.classList.add('play');},1920);
+    setTimeout(function(){root.classList.add('s-txt');},4020);
+    setTimeout(function(){root.classList.add('seq-done');root.classList.remove('seq','s-sign','s-amb','s-txt','snap');if(bo.parentNode)bo.parentNode.removeChild(bo);},4820);}
   var mo=new MutationObserver(function(){if(!root.classList.contains('curtain-wait')){mo.disconnect();run();}});
   mo.observe(root,{attributes:true,attributeFilter:['class']});
 })();
