@@ -11,7 +11,7 @@
 <meta property="og:description" content="청운교회 창립 60주년 기념, 홀리스터 음악극 캔들라이트. 2026년 11월 20일 오후 8시 청운교회 비전홀.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Kaushan+Script&family=Nanum+Pen+Script&family=Gowun+Batang:wght@400;700&family=Song+Myung&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Kaushan+Script&family=Nanum+Pen+Script&family=Gowun+Batang:wght@400;700&family=Song+Myung&family=Diphylleia&family=Stylish&display=swap">
 <style>
 /* Layout: one narrow reading column on phones (title → 일시·장소 → 버튼 → 포스터); on wide screens the poster moves to a right column beside the text. */
 :root{
@@ -411,6 +411,76 @@ html{scroll-padding-top:72px}
 .hero .lead{font-family:"Song Myung",serif;font-weight:400;letter-spacing:-.01em}
 /* 크레딧 카드 제목: 송명 */
 .crew .crew-org{font-family:"Song Myung",serif;font-weight:400}
+/* 바닥글: 제작자 표시 */
+.foot .maker{flex-basis:100%;margin-top:-4px;text-align:right;font-size:11px;letter-spacing:.12em;color:rgba(201,188,198,.45)}
+/* 일시: 숫자 = 카우샨, 노란 글씨 = 송명 */
+.hero .date .num{font-family:"Kaushan Script",cursive;font-weight:400;letter-spacing:0}
+.hero .date .num small{font-family:var(--f-body)}
+.hero .date .when{font-family:"Song Myung",serif;font-weight:400;font-size:19px}
+/* 초대 카드: 흰 문장 = 디필리아, 노란 문장 = 스타일리시 */
+.ga .ga-title,.ga-title{font-family:"Diphylleia",serif;font-weight:400;font-size:18px}
+.ga .ga-note,.ga-note{font-family:"Stylish",sans-serif;font-weight:400;font-size:16px}
+/* 시놉시스: 계절 단어 = 송명, 흰 문장 = 스타일리시 */
+.seasons .s-name{font-family:"Song Myung",serif;font-weight:400;font-size:18px}
+.seasons p{font-family:"Stylish",sans-serif;font-weight:400;font-size:17.5px}
+/* 크레딧: 금색 역할 = 송명, 흰 이름 = 송명 */
+.crew-list dt{font-family:"Song Myung",serif;font-weight:400;font-size:12.5px}
+.crew-list dd{font-family:"Song Myung",serif;font-weight:400;font-size:17px}
+.crew-list .tbd{font-family:"Song Myung",serif}
+/* 송리스트 노래 제목: 송명 */
+.set .sn{font-family:"Song Myung",serif;font-weight:400;font-size:17.5px}
+/* ===== 초대 카드: 화면에 들어오면 금빛 테두리가 한 바퀴 그려짐 (누르면 다시) ===== */
+@property --ga{syntax:'<angle>';inherits:false;initial-value:0deg}
+.ga{position:relative}
+.ga .ga-line{position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;padding:1.5px;background:conic-gradient(from 0deg at 50% 50%,#ffe9a8 0deg,#f2c45a var(--ga),transparent var(--ga));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);filter:drop-shadow(0 0 6px rgba(255,200,90,.8))}
+.ga.drawn .ga-line{animation:gaDraw 1.6s cubic-bezier(.5,0,.2,1) forwards,gaGlow 1.2s ease 1.6s}
+@keyframes gaDraw{to{--ga:360deg}}
+@keyframes gaGlow{50%{filter:drop-shadow(0 0 14px rgba(255,200,90,1))}}
+.ga.fx-ga{cursor:pointer;-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion:reduce){.ga .ga-line{--ga:360deg;animation:none!important}}
+
+/* ===== 기획의도: 스크롤하면 녹는 네온 초 ===== */
+.intent-head-wrap{position:relative;overflow-x:clip}
+.intent-head-wrap .cart{position:absolute;right:64px;top:0;bottom:4px;width:90px;pointer-events:none}
+@media (min-width:880px){.intent-head-wrap .cart{right:auto;left:min(560px,60%)}}
+.nc{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
+.nc path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nc .tube{stroke-width:6;opacity:.85}.nc .core{stroke-width:1.8}
+.nc .tube.o{stroke:#ff7a1f}.nc .core.o{stroke:#ffe2b8}
+.nc .tube.w{stroke:#ffb347}.nc .core.w{stroke:#fff8ea}
+.nc.blue .tube.b{stroke:#3d6bff}.nc.blue .core.b{stroke:#dfe8ff}
+.nc .tube.g{stroke:#ffb347}.nc .core.g{stroke:#fff3dc}
+.nc .fill{fill:url(#introF);stroke:none}
+.nc .fl{transform-box:fill-box;transform-origin:50% 90%}
+@media (prefers-reduced-motion:no-preference){
+ .cart .nc path:not(.fill){stroke-dasharray:1;stroke-dashoffset:1}
+ .cart.on .nc .b,.cart.on .nc .g{animation:ndraw 1.2s cubic-bezier(.45,0,.2,1) forwards}
+ .cart.on .nc .w{animation:ndraw .3s ease-out 1.1s forwards}
+ .cart.on .nc .o{animation:ndraw .7s ease-out 1.3s forwards}
+ .cart .nc .fill{opacity:0}
+ .cart.on .nc .fill{animation:nglow .8s ease-out 1.8s forwards}
+ .cart.on .nc .fl{animation:nsway 3.6s ease-in-out 2.2s infinite}
+ }
+@keyframes ndraw{to{stroke-dashoffset:0}}
+@keyframes nglow{to{opacity:1}}
+@keyframes nsway{0%,100%{transform:scale(1,1) skewX(0)}25%{transform:scale(.96,1.05) skewX(-3deg)}55%{transform:scale(1.03,.97) skewX(2deg)}80%{transform:scale(.98,1.03) skewX(-1deg)}}
+/* 4 녹는 초 */
+.melt .mbody{transform-box:view-box;transform-origin:30px 124px;transform:scaleY(var(--s,1))}
+.melt .mflame{transform:translateY(calc((1 - var(--s,1)) * 70px))}
+
+.cart .halo{position:absolute;left:50%;top:calc(23% + (1 - var(--s,1)) * 54%);width:220px;height:220px;translate:-50% -50%;border-radius:50%;pointer-events:none;background:radial-gradient(circle closest-side,rgba(255,214,150,.42) 0%,rgba(255,180,100,.24) 22%,rgba(255,150,70,.10) 48%,rgba(255,130,60,.035) 70%,transparent 100%);opacity:calc(.55 + (1 - var(--s,1)) * .9);transform:scale(calc(.85 + (1 - var(--s,1)) * .6))}
+.cart .halo2{width:70px;height:70px;background:radial-gradient(circle closest-side,rgba(255,240,200,.55),rgba(255,200,120,.18) 55%,transparent)}
+@media (prefers-reduced-motion:no-preference){.cart .halo{animation:hb 3.2s ease-in-out infinite}.cart .halo2{animation:hb 2.3s ease-in-out infinite reverse}}
+@keyframes hb{0%,100%{filter:brightness(1)}35%{filter:brightness(1.18)}60%{filter:brightness(.88)}80%{filter:brightness(1.08)}}
+.nc .glow{fill:none;stroke-width:12;opacity:.16;stroke-linecap:round;stroke-linejoin:round}
+.nc .glow.o{stroke:#ff8a30}.nc .glow.g{stroke:#ffb347}
+/* ===== 송리스트: 화면 가운데 곡에 계절 색 조명 ===== */
+.set li{position:relative;transition:opacity .4s,background-color .4s}
+.set .no,.set .sn{transition:color .4s,text-shadow .4s}
+.setlist.spotting .set li:not(.spot){opacity:.38}
+.set li.spot{background:radial-gradient(70% 160% at 25% 50%,color-mix(in srgb,var(--sc,#ffe36e) 18%,transparent),transparent 70%)}
+.set li.spot .sn{text-shadow:0 0 14px color-mix(in srgb,var(--sc,#ffe36e) 60%,transparent)}
+.set li.spot .no{color:var(--sc,#ffe36e);text-shadow:0 0 10px var(--sc,#ffe36e)}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
@@ -632,11 +702,14 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   <span class="anchor" id="intent"></span>
   <section class="chapter" data-id="intent" aria-labelledby="intent-title">
     <div class="wrap">
+      <div class="intent-head-wrap">
       <header class="ch-head" data-rv>
         <p class="ch-en" aria-hidden="true">Our Heart</p>
         <h2 id="intent-title">기획의도</h2>
       </header>
       <p class="ch-lead intent-lead" data-rv>초는 제 몸을 녹여야<br>주변을 밝힙니다.</p>
+      <div class="cart" aria-hidden="true"><i class="halo"></i><i class="halo halo2"></i><svg class="nc gold melt" viewBox="0 0 60 130" aria-hidden="true"><defs><radialGradient id="introF" cx="50%" cy="70%" r="60%"><stop offset="0" stop-color="#fff3d0"/><stop offset=".5" stop-color="#ffb24d" stop-opacity=".55"/><stop offset="1" stop-color="#ff7a1f" stop-opacity="0"/></radialGradient></defs><g class="mflame"><g class="fl"><path class="fill" d="M30 8C34 18 40 25 40 34a10 10 0 0 1-20 0C20 25 26 18 30 8Z"/><path class="glow o" pathLength="1" d="M30 8C34 18 40 25 40 34a10 10 0 0 1-20 0C20 25 26 18 30 8Z"/><path class="tube o" pathLength="1" d="M30 8C34 18 40 25 40 34a10 10 0 0 1-20 0C20 25 26 18 30 8Z"/><path class="core o" pathLength="1" d="M30 8C34 18 40 25 40 34a10 10 0 0 1-20 0C20 25 26 18 30 8Z"/></g><path class="glow g" pathLength="1" d="M30 45V52"/><path class="tube w" pathLength="1" d="M30 45V52"/><path class="core w" pathLength="1" d="M30 45V52"/></g><g class="mbody"><path class="glow g" pathLength="1" d="M18 122V60Q18 54 23 55Q26 66 29 56Q33 52 37 55Q42 54 42 60V122Z"/><path class="tube g" pathLength="1" d="M18 122V60Q18 54 23 55Q26 66 29 56Q33 52 37 55Q42 54 42 60V122Z"/><path class="core g" pathLength="1" d="M18 122V60Q18 54 23 55Q26 66 29 56Q33 52 37 55Q42 54 42 60V122Z"/></g><path class="glow g" pathLength="1" d="M8 124H52"/><path class="tube g" pathLength="1" d="M8 124H52"/><path class="core g" pathLength="1" d="M8 124H52"/></svg></div>
+      </div>
       <p class="ch-text" data-rv>〈Candlelight!〉는 자신을 태워 빛을 밝히신 예수님을 찬양하는 80분의 예배형 공연입니다. 11월 20일 단 하루, 극장을 ‘여호와의 집’으로 꾸미고 청년 7명과 밴드가 16곡의 찬양으로 여러분을 맞이합니다.</p>
       <div class="ga" data-rv>
         <p class="ga-kicker" aria-hidden="true">You're invited</p>
@@ -758,6 +831,7 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   <div class="wrap">
     <span>청운교회 홀리스터</span>
     <span>Candlelight! 2026</span>
+    <span class="maker">웹 제작 · 이동림</span>
   </div>
 </footer>
 
@@ -915,6 +989,44 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
   lis.forEach(function(li,i){if(i===lis.length-1)return;var sh=li.querySelector('.shot');if(!sh)return;
     var b=document.createElement('button');b.type='button';b.className='kc-next';b.setAttribute('aria-label','다음 사람 보기');b.textContent='›';
     b.addEventListener('click',function(e){e.stopPropagation();go(i+1);});sh.appendChild(b);});
+})();
+</script>
+<script>
+/* 초대 카드: 화면에 들어오면 금빛 테두리가 한 바퀴 그려짐, 누르면 다시 */
+(function(){
+  var ga=document.querySelector('.ga');if(!ga)return;
+  var l=document.createElement('i');l.className='ga-line';l.setAttribute('aria-hidden','true');ga.appendChild(l);
+  ga.classList.add('fx-ga');
+  if(!('IntersectionObserver' in window)){ga.classList.add('drawn');return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){ga.classList.add('drawn');io.disconnect();}});},{threshold:.35});
+  io.observe(ga);
+  ga.addEventListener('click',function(){ga.classList.remove('drawn');void ga.offsetWidth;ga.classList.add('drawn');io.disconnect();});
+})();
+</script>
+<script>
+/* 기획의도 촛불: 화면에 들어오면 그려지며 켜지고, 내릴수록 녹으며 밝아짐 */
+(function(){
+  var c=document.querySelector('.intent-head-wrap .cart'),lead=document.querySelector('.intent-lead');if(!c||!lead)return;
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){c.classList.add('on');io.disconnect();}});},{threshold:.5});io.observe(c);}else c.classList.add('on');
+  function melt(){var b=lead.getBoundingClientRect();var p=Math.max(0,Math.min(1,(innerHeight*.8-b.top)/(innerHeight*.9)));c.style.setProperty('--s',(1-p*.5).toFixed(3));}
+  addEventListener('scroll',function(){requestAnimationFrame(melt);},{passive:true});addEventListener('resize',melt);melt();
+})();
+</script>
+<script>
+/* 송리스트: 화면 가운데에 온 곡에 그 계절 색 조명 — 처음 한 번 아래로 지나갈 때만 */
+(function(){
+  var sl=document.querySelector('.setlist');if(!sl)return;
+  var lis=[].slice.call(sl.querySelectorAll('.set li'));
+  var colors={'s-open':'#ffe36e','s-spring':'#ff9be6','s-summer':'#71f0c8','s-autumn':'#ffb45e','s-winter':'#93d6ff','s-night':'#cfa6ff'};
+  [].forEach.call(sl.querySelectorAll('.set'),function(s){var h=s.querySelector('h3');if(!h)return;for(var k in colors)if(h.classList.contains(k))s.style.setProperty('--sc',colors[k]);});
+  var done=false;
+  function tick(){if(done)return;var mid=innerHeight*.5,sb=sl.getBoundingClientRect();
+    if(sb.bottom<=mid){done=true;sl.classList.remove('spotting');lis.forEach(function(l){l.classList.remove('spot');});removeEventListener('scroll',onS);return;}
+    var on=sb.top<mid&&sb.bottom>mid;sl.classList.toggle('spotting',on);
+    var best=null,bd=1e9;if(on)lis.forEach(function(l){var b=l.getBoundingClientRect();var d=Math.abs(b.top+b.height/2-mid);if(d<bd){bd=d;best=l;}});
+    lis.forEach(function(l){l.classList.toggle('spot',l===best);});}
+  function onS(){requestAnimationFrame(tick);}
+  addEventListener('scroll',onS,{passive:true});addEventListener('resize',tick);tick();
 })();
 </script>
 </body>
