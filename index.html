@@ -1120,5 +1120,33 @@ html.curtain-wait .title,html.curtain-wait .title *,html.curtain-wait .bar{anima
 if(!('IntersectionObserver' in window)){d.classList.add('line-on');return;}
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){setTimeout(function(){d.classList.add('line-on');},250);io.disconnect();}});},{rootMargin:'0px 0px -15% 0px'});io.observe(d);})();
 </script>
+<style>
+/* 글자 크기 고정: 카카오톡 등 앱·폰의 '글자 크게' 설정 때문에 사이트 글자가 커지지 않게 */
+html,body{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}
+/* MUSIC THEATRE · PRAISE WORSHIP 은 항상 한 줄 */
+.intro .genre{white-space:nowrap}
+</style>
+<script>
+/* 그래도 글자가 커진 폰에서는: 간판 제목과 영문 한 줄이 테두리를 넘을 때만 자동으로 줄이기 (평소 화면은 그대로) */
+(function(){
+  var root=document.documentElement;
+  function guard(){[root,document.body].forEach(function(e){if(e&&e.style&&e.style.getPropertyValue('-webkit-text-size-adjust')&&e.style.getPropertyValue('-webkit-text-size-adjust')!=='100%'){e.style.removeProperty('-webkit-text-size-adjust');e.style.removeProperty('text-size-adjust');}});}
+  function fit(){
+    var w=document.querySelector('.intro .wrap');if(!w)return;
+    var box=w.parentElement,bs=getComputedStyle(box),ws=getComputedStyle(w);
+    var avail=box.clientWidth-parseFloat(bs.paddingLeft)-parseFloat(bs.paddingRight)-16-(parseFloat(ws.paddingLeft)+parseFloat(ws.paddingRight))*.5;
+    [w.querySelector('.title'),w.querySelector('.genre b')||w.querySelector('.genre')].forEach(function(el){
+      if(!el)return;el.style.fontSize='';
+      var pw=el.style.width;el.style.width='max-content';var need=el.offsetWidth;el.style.width=pw;
+      if(need>avail&&avail>0){el.style.fontSize=(parseFloat(getComputedStyle(el).fontSize)*avail/need*.98)+'px';}
+    });
+  }
+  var tm;function later(){clearTimeout(tm);tm=setTimeout(fit,120);}
+  guard();fit();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  addEventListener('load',fit);addEventListener('resize',later);addEventListener('orientationchange',later);
+  if('MutationObserver' in window){var mo=new MutationObserver(function(){guard();later();});[root,document.body].forEach(function(e){if(e)mo.observe(e,{attributes:true,attributeFilter:['style']});});}
+})();
+</script>
 </body>
 </html>
