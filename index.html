@@ -516,6 +516,21 @@ html.seq.snap .intro::after{content:"";position:absolute;inset:0;background:radi
 .intro .wrap{width:fit-content;max-width:calc(100% - 16px);margin-inline:auto;padding:22px clamp(18px,5vw,40px) 26px}
 .intro .sign{inset:0;left:0;top:0;width:auto;height:auto}
 .intro .title{padding-right:.06em}
+/* ===== 분위기: 따뜻한 로즈 (보라 기운 빼고 산호·살구빛) ===== */
+:root{--black:#0b0707;--panel:#181010;--line:#2f2222;--soft:#d0bfb9}
+body{background:#0b0707}
+.intro::before{background:radial-gradient(circle min(78vw,560px) at 46% 44%,rgba(255,120,100,.24),transparent 100%),radial-gradient(circle min(62vw,460px) at 56% 56%,rgba(255,205,130,.16),transparent 100%)}
+.hero::before{background:radial-gradient(closest-side at 35% 45%,rgba(255,120,100,.13),transparent 70%),radial-gradient(closest-side at 70% 60%,rgba(255,205,130,.10),transparent 70%)}
+.ga{background:linear-gradient(170deg,#1e1312,#130c0b)}
+.cast-list .person{background:linear-gradient(180deg,#130c0b,#0b0707)}
+.shot.empty{background:radial-gradient(closest-side,rgba(255,120,100,.13),transparent),var(--panel)}
+.bar{background:rgba(11,7,7,.86)}
+/* 입장 티켓도 같은 분위기로 (티켓 CSS보다 우선하도록 html 붙임) */
+html .gate::before{background:radial-gradient(ellipse 120% 80% at 50% 30%,#2c1511 0%,#170c0a 45%,#080505 80%)}
+html .gate-shade{background:linear-gradient(180deg,rgba(8,5,5,0) 50%,rgba(8,5,5,.15) 80%,rgba(8,5,5,.55))}
+html .tk-half{background:linear-gradient(165deg,#30191a 0%,#1d1111 55%,#150c0b 100%)}
+html .tk-occ,html .tk-sub,html .tk-info dd small{color:#d2bdb4}
+html .tk-info dt,html .tk-foot{color:#ab968d}
 /* ===== 챕터 넘김: 처음 제목→소개처럼, 앞 챕터는 작아지며 흐려지고 다음 챕터가 반투명하게 겹쳐 올라옴 ===== */
 .anchor{display:block;height:0}
 .stack .layer{position:sticky;will-change:transform,opacity}
