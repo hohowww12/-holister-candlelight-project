@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
+<script>/* 렉 줄이기: 안드로이드(삼성 등)는 움직이는 그림의 해상도 상한을 살짝 낮춤 */window.__cvMaxDpr=/Android/i.test(navigator.userAgent)?1.25:2;</script>
 <script>
 /* 새로고침하면 항상 맨 위, 처음 순서(티켓 → 촛불 → 제목 → 테두리·음악)부터 다시 시작 */
 (function(){
@@ -1426,7 +1427,7 @@ html.cl-seq.cl-txt .intro .occasion,html.cl-seq.cl-txt .intro .genre,html.cl-seq
   /* 불이 실제로 번지듯: 촛불에서 불씨가 튀어 → 글자 위를 불길이 타고 지나가며 글자가 드러남 (불꽃·불티 입자 + 타오르는 가장자리) */
   var fc=document.createElement('canvas');fc.className='firecv';fc.setAttribute('aria-hidden','true');logo.appendChild(fc);
   var fx=fc.getContext('2d'),P=[],run=null,FW=0,FH=0,OX=0,OY=0;
-  function fsize(){var dpr=Math.min(2,window.devicePixelRatio||1);FW=logo.offsetWidth*1.5;FH=logo.offsetHeight*1.9;OX=logo.offsetWidth*.25;OY=logo.offsetHeight*.55;
+  function fsize(){var dpr=Math.min(window.__cvMaxDpr||2,window.devicePixelRatio||1);FW=logo.offsetWidth*1.5;FH=logo.offsetHeight*1.9;OX=logo.offsetWidth*.25;OY=logo.offsetHeight*.55;
     fc.style.width=FW+'px';fc.style.height=FH+'px';fc.style.left=(-OX)+'px';fc.style.top=(-OY)+'px';fc.width=FW*dpr;fc.height=FH*dpr;fx.setTransform(dpr,0,0,dpr,0,0);}
   function emit(x,y,n,kind){for(var i=0;i<n;i++){var e=kind==='ember';P.push({x:x+(Math.random()-.5)*(e?10:8),y:y+(Math.random()-.5)*6,vx:(Math.random()-.5)*(e?1.4:.7),vy:-(e?1.2+Math.random()*1.8:.9+Math.random()*2),
     life:0,max:e?50+Math.random()*50:22+Math.random()*26,sz:e?1.2+Math.random()*1.4:(kind==='trail'?4+Math.random()*4:7+Math.random()*9),k:kind});}}
@@ -1509,16 +1510,19 @@ html.cl-seq.cl-txt .intro .occasion,html.cl-seq.cl-txt .intro .genre,html.cl-seq
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');box.insertBefore(cv,box.firstChild);
   var cx=cv.getContext('2d'),W=0,H=0,L=[],t0=null;
-  function size(){var dpr=Math.min(2,window.devicePixelRatio||1);W=box.offsetWidth;H=box.offsetHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+  function size(){var dpr=Math.min(window.__cvMaxDpr||2,window.devicePixelRatio||1);W=box.offsetWidth;H=box.offsetHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
     var n=Math.round(Math.min(90,Math.max(36,W*H/2600)));L=[];for(var i=0;i<n;i++){var r=Math.random();L.push({x:Math.random()*W,y:H*(.35+r*.62),s:.45+r*.8,o:Math.random(),ph:Math.random()*6.28});}L.sort(function(a,b){return a.o-b.o;});}
   size();addEventListener('resize',size);
   function draw(t){cx.clearRect(0,0,W,H);var lit=t0===null?0:reduce?1:Math.min(1,(t-t0)/3200);
     for(var i=0;i<L.length;i++){var p=L[i];if(p.o>lit)break;var a=Math.min(1,(lit-p.o)*8),fl=.85+Math.sin(t/260+p.ph)*.1+Math.sin(t/97+p.ph*2)*.05,r=9*p.s*fl;
       var g=cx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*3.2);g.addColorStop(0,'rgba(255,214,150,'+(.5*a)+')');g.addColorStop(.35,'rgba(255,160,70,'+(.16*a)+')');g.addColorStop(1,'rgba(255,140,60,0)');
       cx.fillStyle=g;cx.beginPath();cx.arc(p.x,p.y,r*3.2,0,6.283);cx.fill();cx.fillStyle='rgba(255,248,230,'+(.9*a)+')';cx.beginPath();cx.ellipse(p.x,p.y,1.5*p.s,3.2*p.s*fl,0,0,6.283);cx.fill();}
-    requestAnimationFrame(draw);}
+    if(!syVis){syRun=false;cv.style.visibility='hidden';return;}requestAnimationFrame(draw);}
+  /* 렉 줄이기: 화면 밖에 있으면 그리기를 쉼 */
+  var syVis=true,syRun=true;
   requestAnimationFrame(draw);
-  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&t0===null){t0=performance.now();io.disconnect();}});},{threshold:.35});io.observe(box);}else t0=0;
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&t0===null){t0=performance.now();io.disconnect();}});},{threshold:.35});io.observe(box);
+    new IntersectionObserver(function(es){es.forEach(function(e){syVis=e.isIntersecting;if(syVis&&!syRun){syRun=true;cv.style.visibility='';requestAnimationFrame(draw);}});},{rootMargin:'120px 0px'}).observe(box);}else t0=0;
 })();
 </script>
 
@@ -1559,7 +1563,7 @@ html.cl-seq.cl-txt .intro .occasion,html.cl-seq.cl-txt .intro .genre,html.cl-seq
   var cv=document.createElement('canvas');cv.className='crowd';cv.setAttribute('aria-hidden','true');intro.insertBefore(cv,intro.firstChild);
   var cx=cv.getContext('2d'),W=0,H=0,L=[],mode=1,t0=null;
   function off(el){var x=0,y=0;while(el&&el!==intro){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}return {x:x,y:y};}
-  function build(){var dpr=Math.min(2,window.devicePixelRatio||1);W=intro.offsetWidth;H=intro.offsetHeight;cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+  function build(){var dpr=Math.min(window.__cvMaxDpr||2,window.devicePixelRatio||1);W=intro.offsetWidth;H=intro.offsetHeight;cv.style.width=W+'px';cv.style.height=H+'px';cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
     var o=off(wrap),fx0=o.x-10,fy0=o.y-10,fx1=o.x+wrap.offsetWidth+10,fy1=o.y+wrap.offsetHeight+10;L=[];
     var cue=intro.querySelector('.cue'),cy=cue?off(cue).y:H,ch=cue?cue.offsetHeight:0;
     function ok(x,y){if(x>fx0&&x<fx1&&y>fy0&&y<fy1)return false;if(cue&&y>cy-14&&y<cy+ch+10&&Math.abs(x-W/2)<90)return false;return true;}
@@ -1574,10 +1578,10 @@ html.cl-seq.cl-txt .intro .occasion,html.cl-seq.cl-txt .intro .genre,html.cl-seq
       for(var i=0;i<L.length;i++){var p=L[i];if(p.o>lit)break;var a=Math.min(1,(lit-p.o)*7),fl=.86+Math.sin(t/260+p.ph)*.09+Math.sin(t/97+p.ph*2)*.05,r=8*p.s*fl;
         var g=cx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*3.2);g.addColorStop(0,'rgba(255,214,150,'+(.48*a)+')');g.addColorStop(.35,'rgba(255,160,70,'+(.15*a)+')');g.addColorStop(1,'rgba(255,140,60,0)');
         cx.fillStyle=g;cx.beginPath();cx.arc(p.x,p.y,r*3.2,0,6.283);cx.fill();cx.fillStyle='rgba(255,248,230,'+(.9*a)+')';cx.beginPath();cx.ellipse(p.x,p.y,1.4*p.s,3*p.s*fl,0,0,6.283);cx.fill();}}
-    cvOn=(window.scrollY||pageYOffset)<innerHeight*1.1;if(cvOn)requestAnimationFrame(draw);else cvRun=false;}
+    cvOn=(window.scrollY||pageYOffset)<innerHeight*1.1;if(cvOn)requestAnimationFrame(draw);else{cvRun=false;cv.style.visibility='hidden';}}
   /* 렉 줄이기: 첫 화면이 안 보이면 객석 촛불 그리기를 쉼 */
   var cvOn=true,cvRun=true;
-  function cvChk(){cvOn=(window.scrollY||pageYOffset)<innerHeight*1.1;if(cvOn&&!cvRun){cvRun=true;requestAnimationFrame(draw);}}
+  function cvChk(){cvOn=(window.scrollY||pageYOffset)<innerHeight*1.1;if(cvOn&&!cvRun){cvRun=true;cv.style.visibility='';requestAnimationFrame(draw);}}
   addEventListener('scroll',cvChk,{passive:true});
   build();requestAnimationFrame(draw);
   var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(build,150);});
@@ -2203,7 +2207,7 @@ html.d3 .dust{display:block}
     function size(){var r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=Math.max(1,Math.round(W));cv.height=Math.max(1,Math.round(H));}
     var shown=true;
     return {size:size,draw:function(t,px,py,alpha){if(!W)size();
-      if(alpha<=0){if(shown){cx.clearRect(0,0,W,H);shown=false;}return;}shown=true;
+      if(alpha<=0){if(shown){cx.clearRect(0,0,W,H);shown=false;cv.style.visibility='hidden';}return;}if(!shown)cv.style.visibility='';shown=true;
       cx.clearRect(0,0,W,H);cx.globalCompositeOperation='lighter';
       for(var i=0;i<P.length;i++){var p=P[i],z=p.z;
         var y=((p.y-t*p.sp*(.5+z))%1+1)%1,x=p.x+Math.sin(t*.3+p.ph)*.02;
